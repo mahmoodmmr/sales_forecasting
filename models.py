@@ -174,7 +174,7 @@ def plot_results(results, original_df, model_name):
     ax.legend()
     sns.despine()
 
-    plt.savefig(f'../model_output/{model_name}_forecast.png')
+    plt.savefig(f'model_output/{model_name}_forecast.png')
 
 def regressive_model(train_data, test_data, model, model_name):
     """Runs regressive models in SKlearn framework. First calls scale_data
@@ -199,7 +199,7 @@ def regressive_model(train_data, test_data, model, model_name):
     predictions = mod.predict(X_test)
 
     # Undo scaling to compare predictions against original data
-    original_df = load_data('../data/monthly_data.csv')
+    original_df = load_data('data/monthly_data.csv')
     unscaled = undo_scaling(predictions, X_test, scaler_object)
     unscaled_df = predict_df(unscaled, original_df)
 
@@ -233,7 +233,7 @@ def lstm_model(train_data, test_data):
     predictions = model.predict(X_test, batch_size=1)
 
     # Undo scaling to compare predictions against original data
-    original_df = load_data('../data/monthly_data.csv')
+    original_df = load_data('data/monthly_data.csv')
     unscaled = undo_scaling(predictions, X_test, scaler_object, lstm=True)
     unscaled_df = predict_df(unscaled, original_df)
 
@@ -256,7 +256,7 @@ def sarimax_model(data):
     data['pred_value'] = sar.predict(start=start, end=end, dynamic=dynamic)
 
     # Generate predictions dataframe
-    original_df = load_data('../data/monthly_data.csv')
+    original_df = load_data('data/monthly_data.csv')
     unscaled_df = predict_df(data, original_df)
 
     # print scores and plot results
@@ -268,7 +268,7 @@ def main():
     and run arima model.
     """
     # Regression models
-    model_df = load_data('../data/model_df.csv')
+    model_df = load_data('data/model_df.csv')
     train, test = tts(model_df)
 
     # Sklearn
@@ -284,7 +284,7 @@ def main():
     lstm_model(train, test)
 
     # Arima
-    ts_data = load_data('../data/arima_df.csv').set_index('date')
+    ts_data = load_data('data/arima_df.csv').set_index('date')
     ts_data.index = pd.to_datetime(ts_data.index)
 
     sarimax_model(ts_data)
